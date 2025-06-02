@@ -1,0 +1,29 @@
+﻿@hubsBaseAddress = localhost:5234/hubs
+@apiBaseAddress = localhost:5234/api
+@username = zhoro
+@password = Qwerty1@
+
+# @name Login
+POST http://{{apiBaseAddress}}/login
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+### Secret
+GET http://{{apiBaseAddress}}/secret
+Authorization: Bearer {{Login.response.body.$.accessToken}}
+
+###
+# @name Negotiate
+POST http://{{hubsBaseAddress}}/chat/negotiate
+Authorization: Bearer {{Login.response.body.$.accessToken}}
+
+### SendMessage
+WS ws://{{hubsBaseAddress}}/chat?id={{Negotiate.response.body.connectionId}}&access_token={{Login.response.body.accessToken}}
+Accept: application/json
+
+> {"protocol":"json","version":1}␞
+> {"type":1,"target":"SendMessage","arguments":["Hello world"]}␞
