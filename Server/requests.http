@@ -1,0 +1,28 @@
+﻿@apiBaseAddress = http://localhost:5123/api
+@username = zhoro
+@password = Qwerty1@
+
+# @name Login
+POST {{apiBaseAddress}}/login
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+### Secret
+GET {{apiBaseAddress}}/secret
+Authorization: Bearer {{Login.response.body.$.accessToken}}
+
+### Get waiting queue of players
+GET {{apiBaseAddress}}/waiting-queue
+Authorization: Bearer {{Login.response.body.$.accessToken}}
+
+### Get all connections
+GET {{apiBaseAddress}}/all-connections
+Authorization: Bearer {{Login.response.body.$.accessToken}}
+
+### Get all game rooms
+GET {{apiBaseAddress}}/game-rooms
+Authorization: Bearer {{Login.response.body.$.accessToken}}
